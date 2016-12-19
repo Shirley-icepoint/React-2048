@@ -1,10 +1,7 @@
 import React from 'react';
 import {render} from 'react-dom';
+import Game from './Game.js';
 
-class App extends React.Component {
-  render () {
-    return <p> Hello React!</p>;
-  }
-}
+'use strict';
 
-render(<App/>, document.getElementById('app'));
+render(<Game/>, document.getElementById('app'));
