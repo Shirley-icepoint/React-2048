@@ -10,7 +10,7 @@ const lines = [
   [0, 4, 8, 12],
   [1, 5, 9, 13],
   [2, 6, 10, 14],
-  [3 7, 11, 15]
+  [3, 7, 11, 15]
 ];
 
 class Game extends React.Component {
@@ -38,11 +38,11 @@ class Game extends React.Component {
 
   // check if game win
   _isGameWin() {
-    return _.find(this.state.squares, val => 2048 ? true : false;
+    return _.find(this.state.squares, val => 2048) ? true : false;
   }
   // check if game over
   _isGameOver() {
-    if (_.find(this.state.squares, val => null) {
+    if (_.find(this.state.squares, val => null)) {
       return false;
     }
 
