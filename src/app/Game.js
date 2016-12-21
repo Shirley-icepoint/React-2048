@@ -49,7 +49,39 @@ class Game extends React.Component {
     //TODO
   }
 
+  // handle up, down, left, right keyboard event
+  _handleKeyPress(e) {
+    const squares = this.state.squares;
+    const chunks = _.chunk(lines, 4);
+
+    if (e.keyCode === 37) { // left
+      _.forEach(chunks[0], line => {
+        // filter out null value
+        const array = _.filter(line, index => !_.isNull(squares[index]));
+
+        // concatenate values
+        let values = [];
+        for (let i = 0; i < array.length; i++) {
+          if (i != array.lengh - 1 && squares[array[i]] === squares[array[i+1]]) {
+            values.push(squares[array[i]] * 2);
+            i++;
+          } else {
+            values.push(squares[array[i]]);
+          }
+        }
+      });
+    } else if (e.keyCode === 38) { // up
+
+    } else if (e.keyCode === 39) { // right
+
+    } else if (e.keyCode === 40) { // down
+
+    }
+  }
+
 	render() {
+    document.body.onkeydown = (e) => this._handleKeyPress(e);
+
     const squares = this.state.squares;
 		return (
       <div>
