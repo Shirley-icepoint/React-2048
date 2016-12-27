@@ -2,15 +2,33 @@ import React from 'react';
 const _ = require('lodash');
 import Square from './Square.js'
 
+/*
+ *  0  1  2  3
+ *  4  5  6  7
+ *  8  9  10 11
+ *  12 13 14 15
+ */
 const lines = [
+  // left
   [0, 1, 2, 3],
   [4, 5, 6, 7],
   [8, 9, 10, 11],
   [12, 13, 14, 15],
+  // up
   [0, 4, 8, 12],
   [1, 5, 9, 13],
   [2, 6, 10, 14],
-  [3, 7, 11, 15]
+  [3, 7, 11, 15],
+  // right
+  [3, 2, 1, 0],
+  [7, 6, 5, 4],
+  [11, 10, 9, 8],
+  [15, 14,13, 12],
+  // down
+  [12, 8, 4, 0],
+  [13, 9, 5, 1],
+  [14, 10, 6, 2],
+  [15, 11, 7, 3]
 ];
 
 class Game extends React.Component {
@@ -51,11 +69,22 @@ class Game extends React.Component {
 
   // handle up, down, left, right keyboard event
   _handleKeyPress(e) {
+    if (e.keyCode === 37) { // left
+      this._handleOneKey(0);
+    } else if (e.keyCode === 38) { // up
+      this._handleOneKey(1);
+    } else if (e.keyCode === 39) { // right
+      this._handleOneKey(2);
+    } else if (e.keyCode === 40) { // down
+      this._handleOneKey(3);
+    }
+  }
+
+  _handleOneKey(index) {
     const squares = this.state.squares;
     const chunks = _.chunk(lines, 4);
 
-    if (e.keyCode === 37) { // left
-      _.forEach(chunks[0], line => {
+    _.forEach(chunks[index], line => {
         // filter out null value
         const array = _.filter(line, index => !_.isNull(squares[index]));
 
@@ -69,14 +98,19 @@ class Game extends React.Component {
             values.push(squares[array[i]]);
           }
         }
+
+        // update squares
+        for (let i = 0; i < line.length; i++) {
+          if (i >= values.length) {
+            squares[line[i]] = null;
+          } else {
+            squares[line[i]] = values[i];
+          }
+        }
+
+        // set state
+        this.setState(squares);
       });
-    } else if (e.keyCode === 38) { // up
-
-    } else if (e.keyCode === 39) { // right
-
-    } else if (e.keyCode === 40) { // down
-
-    }
   }
 
 	render() {
