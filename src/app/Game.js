@@ -78,6 +78,8 @@ class Game extends React.Component {
     } else if (e.keyCode === 40) { // down
       this._handleOneKey(3);
     }
+
+    const squares = this.state.squares;
   }
 
   _handleOneKey(index) {
@@ -107,10 +109,14 @@ class Game extends React.Component {
             squares[line[i]] = values[i];
           }
         }
-
-        // set state
-        this.setState(squares);
       });
+
+      // select a random grid whose value is null, and set it as either 2 or 4
+      const grids = _.filter(_.range(16), index => _.isNull(squares[index]));
+      squares[grids[_.random(0, grids.length - 1)]] = _.random(1, 2) * 2;
+
+      // set state
+      this.setState(squares);
   }
 
 	render() {
