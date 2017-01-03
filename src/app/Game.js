@@ -1,7 +1,7 @@
 import React from 'react';
 const _ = require('lodash');
 import Square from './Square.js'
-
+import style from './styles/main.scss'
 /*
  *  0  1  2  3
  *  4  5  6  7
@@ -40,7 +40,7 @@ class Game extends React.Component {
   }
 
   _initGame() {
-    let squares = _.fill(Array(16), null);
+    let squares = _.fill(Array(16), 0);
 
     // random assign two squares to 2 or 4, make sure one of them is 2
     const valOne = _.random(0, 15);
@@ -60,7 +60,7 @@ class Game extends React.Component {
   }
   // check if game over
   _isGameOver() {
-    if (_.find(this.state.squares, val => null)) {
+    if (_.find(this.state.squares, val => 0)) {
       return false;
     }
 
@@ -88,7 +88,7 @@ class Game extends React.Component {
 
     _.forEach(chunks[index], line => {
         // filter out null value
-        const array = _.filter(line, index => !_.isNull(squares[index]));
+        const array = _.filter(line, index => squares[index] !== 0);
 
         // concatenate values
         let values = [];
@@ -104,7 +104,7 @@ class Game extends React.Component {
         // update squares
         for (let i = 0; i < line.length; i++) {
           if (i >= values.length) {
-            squares[line[i]] = null;
+            squares[line[i]] = 0;
           } else {
             squares[line[i]] = values[i];
           }
@@ -112,7 +112,7 @@ class Game extends React.Component {
       });
 
       // select a random grid whose value is null, and set it as either 2 or 4
-      const grids = _.filter(_.range(16), index => _.isNull(squares[index]));
+      const grids = _.filter(_.range(16), index => squares[index] === 0);
       squares[grids[_.random(0, grids.length - 1)]] = _.random(1, 2) * 2;
 
       // set state
@@ -124,7 +124,7 @@ class Game extends React.Component {
 
     const squares = this.state.squares;
 		return (
-      <div>
+      <div className="game">
 			  <div className="game-row">
           <Square value={squares[0]}/>
           <Square value={squares[1]}/>

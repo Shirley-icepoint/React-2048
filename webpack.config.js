@@ -22,6 +22,9 @@ var config = {
         loaders: ['react-hot', 'babel'],
         include: APP_DIR
       },
+      { test: /\.scss$/,
+        loaders: ['style', 'css', 'sass']
+      }
     ]
   },
   plugins: [
