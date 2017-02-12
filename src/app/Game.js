@@ -40,7 +40,7 @@ class Game extends React.Component {
   }
 
   _initGame() {
-    let squares = _.fill(Array(16), 0);
+    let squares = _.fill(Array(16), null);
 
     // random assign two squares to 2 or 4, make sure one of them is 2
     const valOne = _.random(0, 15);
@@ -60,7 +60,7 @@ class Game extends React.Component {
   }
   // check if game over
   _isGameOver() {
-    if (_.find(this.state.squares, val => 0)) {
+    if (_.find(this.state.squares, val => null)) {
       return false;
     }
 
@@ -83,12 +83,14 @@ class Game extends React.Component {
   }
 
   _handleOneKey(index) {
+    const squaresCopy = _.clone(this.state.squares);
     const squares = this.state.squares;
     const chunks = _.chunk(lines, 4);
+    let updateFlag = false;
 
     _.forEach(chunks[index], line => {
         // filter out null value
-        const array = _.filter(line, index => squares[index] !== 0);
+        const array = _.filter(line, index => squares[index] !== null);
 
         // concatenate values
         let values = [];
@@ -104,19 +106,21 @@ class Game extends React.Component {
         // update squares
         for (let i = 0; i < line.length; i++) {
           if (i >= values.length) {
-            squares[line[i]] = 0;
+            squares[line[i]] = null;
           } else {
             squares[line[i]] = values[i];
           }
         }
       });
 
-      // select a random grid whose value is null, and set it as either 2 or 4
-      const grids = _.filter(_.range(16), index => squares[index] === 0);
-      squares[grids[_.random(0, grids.length - 1)]] = _.random(1, 2) * 2;
+      if (!_.isEqual(squares, squaresCopy)) {
+        // select a random grid whose value is null, and set it as either 2 or 4
+        const grids = _.filter(_.range(16), index => squares[index] === null);
+        squares[grids[_.random(0, grids.length - 1)]] = _.random(1, 2) * 2;
 
-      // set state
-      this.setState(squares);
+        // set state
+        this.setState(squares);
+      }
   }
 
 	render() {
